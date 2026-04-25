@@ -1,0 +1,217 @@
+/* 기본 설정 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #0b0e14; /* 깊은 우주색 */
+    color: #ffffff;
+    font-family: 'Dongle', sans-serif;
+    font-size: 1.5rem;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* 별 배경 */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    overflow: hidden;
+}
+
+/* 별 반짝임 효과 */
+.stars::after {
+    content: "";
+    position: absolute;
+    top: -10rem;
+    left: -10rem;
+    width: calc(100% + 20rem);
+    height: calc(100% + 20rem);
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: stars-move 100s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes stars-move {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100px); }
+}
+
+/* 컨테이너 레이아웃 */
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px 0;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05); /* 유리 효과 */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 162, 255, 0.2);
+}
+
+/* 타이틀 디자인 */
+h1 {
+    text-align: center;
+    font-size: 7rem;
+    margin-bottom: 0;
+    letter-spacing: 5px;
+    background: linear-gradient(to right, #8e2de2, #1cc9c0, #00d2ff);
+    background-clip : text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(142, 45, 226, 0.5);
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+/* 입력*/
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input, textarea, select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: white;
+    font-family: 'Dongle', sans-serif;
+    font-size: 1.4rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #00d2ff;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+}
+
+textarea {
+    height: 120px;
+    resize: none;
+}
+
+/* 버튼 */
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Dongle', sans-serif;
+    font-size: 1.5rem;
+    transition: 0.3s;
+}
+
+#sendBtn {
+    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+    color: white;
+    padding: 10px;
+}
+
+#sendBtn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(142, 45, 226, 0.6);
+}
+
+/* 검색 */
+.search-section {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.search-section input { flex: 1; }
+
+.search-section button {
+    background: #222;
+    color: #00d2ff;
+    border: 1px solid #00d2ff;
+    padding: 0 20px;
+}
+
+.search-section button:hover {
+    background: #00d2ff;
+    color: #000;
+}
+
+/* 메시지 카드 */
+.message-card {
+    background: rgba(255, 255, 255, 0.08);
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    border-left: 4px solid #00d2ff;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message-card h3 {
+    margin: 0 0 10px 0;
+    color: #00d2ff;
+    font-size: 1.8rem;
+}
+
+.message-card p {
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+    color: #ddd;
+}
+
+.message-card small {
+    color: #777;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* 카드 버튼. */
+.card-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn {
+    background: rgba(0, 210, 255, 0.1);
+    color: #00d2ff;
+    border: 1px solid #00d2ff;
+    font-size: 1.2rem;
+    padding: 2px 12px;
+}
+
+.del-btn {
+    background: rgba(255, 0, 85, 0.1);
+    color: #ff0055;
+    border: 1px solid #ff0055;
+    font-size: 1.2rem;
+    padding: 2px 12px;
+}
+
+.edit-btn:hover { background: #00d2ff; color: #000; }
+.del-btn:hover { background: #ff0055; color: #fff; }
+
+hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+    margin: 30px 0;
+}
