@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>외계통신 Space Letter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <h1>외계통신</h1>
+        <p class="subtitle">*-*-*-*우주와 소통해보세요*-*-*-*</p>
+
+        <div class="input-section">
+            <input type="text" id="title" placeholder="제목을 입력하세요!">
+            <textarea id="content" placeholder="우주로 보낼 메시지를 적어주세요!"></textarea>
+            <button onclick="sendMessage()" id="sendBtn">메시지 전송</button>
+        </div>
+
+        <hr>
+
+        <div class="search-section">
+            <select id="searchType">
+                <option value="all">전체</option>
+                <option value="title">제목</option>
+                <option value="content">내용</option>
+            </select>
+            <input type="text" id="keyword" placeholder="메시지 검색...">
+            <button onclick="loadMessages()">검색</button>
+        </div>
+
+        <div id="messageList">
+            </div>
+    </div>
+
+    <script>
+        
+        window.onload = () => loadMessages();
+
+        
+        async function sendMessage() {
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            const response = await fetch('/api/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, content })
+            });
+
+            const data = await response.json();
+            alert(data.message);
+            location.reload();
+        }
+
+        
+        async function loadMessages() {
+            const type = document.getElementById('searchType').value;
+            const keyword = document.getElementById('keyword').value;
+            const response = await fetch(`/api/messages?type=${type}&keyword=${keyword}`);
+            const messages = await response.json();
+
+            const listDiv = document.getElementById('messageList');
+            listDiv.innerHTML = '';
+
+            messages.forEach(msg => {
+                listDiv.innerHTML += `
+                    <div class="message-card">
+                        <h3>${msg.title}</h3>
+                        <p>${msg.content}</p>
+                        <small>${msg.created_at}</small>
+                        <div class="card-buttons">
+                            <button class="edit-btn" onclick="editMessage(${msg.id}, '${msg.title}', '${msg.content}')">수정</button>
+                            <button class="del-btn" onclick="deleteMessage(${msg.id})">삭제</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        
+        async function deleteMessage(id) {
+            if(!confirm("이 메시지를 삭제하겠습니까?")) return;
+            const response = await fetch(`/api/messages/${id}`, { method: 'DELETE' });
+            const data = await response.json();
+            alert(data.message);
+            loadMessages();
+        }
+
+        
+        async function editMessage(id, oldTitle, oldContent) {
+            const newTitle = prompt("새 제목을 입력하세요", oldTitle);
+            const newContent = prompt("새 내용을 입력하세요", oldContent);
+
+            if(newTitle && newContent) {
+                const response = await fetch(`/api/messages/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: newTitle, content: newContent })
+                });
+                const data = await response.json();
+                alert(data.message);
+                loadMessages();
+            }
+        }
+    </script>
+</body>
+</html>
